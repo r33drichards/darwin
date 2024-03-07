@@ -8,4 +8,6 @@
     home = "/Users/robertwendt";
     createHome = true; # Ensures the home directory is created
   };
+  services.nix-daemon.enable = true;
+
 }
