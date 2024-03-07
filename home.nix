@@ -63,6 +63,10 @@
     (pkgs.writeShellScriptBin "pff" ''
       ssh -L $1:localhost:$2 alice@dev
     '')
+    # nix run nix-darwin -- switch --refresh --flake github:r33drichards/darwin
+    (pkgs.writeShellScriptBin "d" ''
+      nix run nix-darwin -- switch --refresh --flake github:r33drichards/darwin
+    '')
     # (pkgs.writeShellScriptBin "cdhm" "cd ~/.config/home-manager")
   ];
   programs.zsh = {
