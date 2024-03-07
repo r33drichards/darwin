@@ -9,6 +9,7 @@
     createHome = true; # Ensures the home directory is created
   };
   services.nix-daemon.enable = true;
+  programs.zsh.enable = true;
 
   environment.systemPackages = [
     # # Adds the 'hello' command to your environment. It prints a friendly
