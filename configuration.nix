@@ -32,28 +32,27 @@
   # todo tailscale up --ssh 
   # https://tailscale.com/kb/1215/oauth-clients#registering-new-nodes-using-oauth-credentials
 
-  # launchd.daemons.ts = {
-  #   serviceConfig = {
-  #     WorkingDirectory = (builtins.getEnv "HOME");
-  #     EnvironmentVariables = { };
-  #     KeepAlive = true;
-  #     RunAtLoad = true;
-  #     StandardOutPath = "/tmp/tailscale.log";
-  #     StandardErrorPath = "/tmp/tailscale.log";
-  #   };
-  #   script = with  pkgs;''
-  #     source ${config.system.build.setEnvironment}
-  #     sleep 2
+  launchd.daemons.tailscale = {
+    serviceConfig = {
+      RunAtLoad = true;
+      StandardOutPath = "/tmp/tailscale.out.log";
+      StandardErrorPath = "/tmp/tailscale.err.log";
+    };
+    script = with  pkgs;''
+      echo "tailscale up"
 
-  #     # check if we are already authenticated to tailscale
-  #     status="$(${tailscale}/bin/tailscale status -json | ${jq}/bin/jq -r .BackendState)"
-  #     if [ $status = "Running" ]; then # if so, then do nothing
-  #       exit 0
-  #     fi
+      source ${config.system.build.setEnvironment}
+      sleep 2
 
-  #     exec ${pkgs.tailscale}/bin/tailscale up --ssh
-  #   '';
-  # };
+      # check if we are already authenticated to tailscale
+      status="$(${tailscale}/bin/tailscale status -json | ${jq}/bin/jq -r .BackendState)"
+      if [ $status = "Running" ]; then # if so, then do nothing
+        echo "tailscale is already running"
+        exit 0
+      fi
+      ${pkgs.tailscale}/bin/tailscale up --ssh
+    '';
+  };
 
 
 
