@@ -49,9 +49,6 @@
     # git add .
     # git commit -m "Initial commit"
     # git push --set-upstream origin main
-    (pkgs.writeShellScriptBin "chm" ''
-      code ~/.config/home-manager/home.nix
-    '')
 
     # cd into icloud dir
     (pkgs.writeShellScriptBin "ic" ''
@@ -64,7 +61,7 @@
       ssh -L $1:localhost:$2 alice@dev
     '')
     # nix run nix-darwin -- switch --refresh --flake github:r33drichards/darwin
-    (pkgs.writeShellScriptBin "d" ''
+    (pkgs.writeShellScriptBin "switch" ''
       nix run nix-darwin -- switch --refresh --flake github:r33drichards/darwin
     '')
     # (pkgs.writeShellScriptBin "cdhm" "cd ~/.config/home-manager")
@@ -76,11 +73,7 @@
       export NIXPKGS_ALLOW_UNFREE=1 
       eval "$(direnv hook $SHELL)"
       export PATH=/opt/homebrew/bin:$PATH
-      source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
     '';
-    shellAliases = {
-      hms = "home-manager switch -b backup";
-    };
     oh-my-zsh = {
       enable = true;
       plugins = [ "git" "thefuck" ];
