@@ -55,11 +55,23 @@
   };
 
 
+  launchd.agents.pf3000 = {
+    serviceConfig = {
+      RunAtLoad = true;
+      StandardOutPath = "/tmp/pf3000.out.log";
+      StandardErrorPath = "/tmp/pf3000.err.log";
+    };
+    script = with  pkgs;''
+      ssh \
+        -N \
+        -o UserKnownHostsFile=/dev/null \
+        -o StrictHostKeyChecking=no \
+        -o ServerAliveInterval=60 \
+        -o ServerAliveCountMax=3 \
+        -L 3000:localhost:3000 alice@dev
+    '';
+  };
 
-  # ssh \
-  #   -o UserKnownHostsFile=/dev/null \
-  #   -o StrictHostKeyChecking=no \
-  #  -N \
-  #   -L 3000:localhost:3000 alice@dev
+
 
 }
