@@ -14,6 +14,7 @@
       Roberts-MacBook-Air = darwin.lib.darwinSystem {
         system = "aarch64-darwin";
         modules = [
+          ./configuration.nix
           home-manager.darwinModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
