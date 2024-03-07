@@ -4,8 +4,8 @@
   # Set your system's hostname
 
   # Users configuration
-  users.users.robertwendt = {
-    home = "/Users/robertwendt";
+  users.users.rw = {
+    home = "/Users/rw";
     createHome = true; # Ensures the home directory is created
   };
   services.nix-daemon.enable = true;
