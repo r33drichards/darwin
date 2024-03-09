@@ -1,6 +1,19 @@
 { config, pkgs, lib, ... }:
 
+
 {
+  # Run the linux-builder as a background service
+  nix.linux-builder.enable = true;
+
+  # Add needed system-features to the nix daemon
+  # Starting with Nix 2.19, this will be automatic
+  nix.settings.system-features = [
+    "nixos-test"
+    "apple-virt"
+  ];
+
+  nix.settings.trusted-users = [ "rw" ];
+
   # Set your system's hostname
 
   # Users configuration
