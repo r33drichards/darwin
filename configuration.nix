@@ -75,13 +75,18 @@
       StandardErrorPath = "/tmp/pf3000.err.log";
     };
     script = with  pkgs;''
-      ssh \
-        -N \
-        -o UserKnownHostsFile=/dev/null \
-        -o StrictHostKeyChecking=no \
-        -o ServerAliveInterval=60 \
-        -o ServerAliveCountMax=3 \
-        -L 3000:localhost:3000 alice@dev
+      ssh -N -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -L 3000:localhost:3000 alice@dev
+    '';
+  };
+
+    launchd.agents.pf8080 = {
+    serviceConfig = {
+      RunAtLoad = true;
+      StandardOutPath = "/tmp/pf8080.out.log";
+      StandardErrorPath = "/tmp/pf8080.err.log";
+    };
+    script = with  pkgs;''
+      ssh -N -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -L 8080:localhost:8080 alice@dev
     '';
   };
 
