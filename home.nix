@@ -3,8 +3,8 @@
 {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
-  home.username = "robertwendt";
-  home.homeDirectory = "/Users/robertwendt";
+  home.username = "rw";
+  home.homeDirectory = "/Users/rw";
 
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
@@ -21,18 +21,7 @@
     # # Adds the 'hello' command to your environment. It prints a friendly
     # # "Hello, world!" when run.
     # pkgs.vscode
-    pkgs.git
-    pkgs.mosh
-    pkgs.emacs
-    # ssh
-    pkgs.openssh
-    pkgs.nix-direnv
-    pkgs.thefuck
-    pkgs.poetry
-    # pip
-    pkgs.python3Packages.pip
-    pkgs.nixpkgs-fmt
-    pkgs.tailscale
+
     # pkgs.syncthing todo add me later
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -54,17 +43,7 @@
     (pkgs.writeShellScriptBin "ic" ''
       cd ~/Library/Mobile\ Documents/com~apple~CloudDocs/
     '')
-    (pkgs.writeShellScriptBin "pf" ''
-      ssh -L $1:localhost:$1 alice@dev
-    '')
-    (pkgs.writeShellScriptBin "pff" ''
-      ssh -L $1:localhost:$2 alice@dev
-    '')
-    # nix run nix-darwin -- switch --refresh --flake github:r33drichards/darwin
-    (pkgs.writeShellScriptBin "switch" ''
-      nix run nix-darwin -- switch --refresh --flake github:r33drichards/darwin
-    '')
-    # (pkgs.writeShellScriptBin "cdhm" "cd ~/.config/home-manager")
+
   ];
   programs.zsh = {
     enable = true;

@@ -12,6 +12,14 @@
     "apple-virt"
   ];
 
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  # Makes it so things that require channels can still work
+  # such as nix-shell
+  nix.nixPath = [
+    "nixpkgs=flake:nixpkgs"
+  ];
+
   nix.settings.trusted-users = [ "rw" ];
 
   # Set your system's hostname
@@ -24,7 +32,7 @@
   services.nix-daemon.enable = true;
   programs.zsh.enable = true;
 
-  environment.systemPackages = [
+  environment.systemPackages = with pkgs; [
     # # Adds the 'hello' command to your environment. It prints a friendly
     # # "Hello, world!" when run.
     pkgs.vscode
@@ -36,6 +44,10 @@
     # pip
     pkgs.nixpkgs-fmt
     pkgs.tailscale
+    warp-terminal
+    transmission
+    earthly
+    pkgs.thefuck
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -71,25 +83,49 @@
   launchd.agents.pf3000 = {
     serviceConfig = {
       RunAtLoad = true;
+      KeepAlive = true;
       StandardOutPath = "/tmp/pf3000.out.log";
       StandardErrorPath = "/tmp/pf3000.err.log";
     };
-    script = with  pkgs;''
-      ssh -N -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -L 3000:localhost:3000 alice@dev
+    script = with  pkgs; ''
+      ssh -N -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -L 3000:localhost:3000 alice@devenv
     '';
   };
 
-    launchd.agents.pf8080 = {
+  launchd.agents.pf8000 = {
     serviceConfig = {
       RunAtLoad = true;
+      KeepAlive = true;
+      StandardOutPath = "/tmp/pf8000.out.log";
+      StandardErrorPath = "/tmp/pf8000.err.log";
+    };
+    script = with  pkgs;''
+      ssh -N -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -L 8000:localhost:8000 alice@devenv
+    '';
+  };
+
+  launchd.agents.pf8080 = {
+    serviceConfig = {
+      RunAtLoad = true;
+      KeepAlive = true;
       StandardOutPath = "/tmp/pf8080.out.log";
       StandardErrorPath = "/tmp/pf8080.err.log";
     };
     script = with  pkgs;''
-      ssh -N -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -L 8080:localhost:8080 alice@dev
+      ssh -N -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -L 8080:localhost:8080 alice@devenv
     '';
   };
 
-
+  launchd.agents.pf8081 = {
+    serviceConfig = {
+      RunAtLoad = true;
+      KeepAlive = true;
+      StandardOutPath = "/tmp/pf8081.out.log";
+      StandardErrorPath = "/tmp/pf8081.err.log";
+    };
+    script = with  pkgs;''
+      ssh -N -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -L 8081:localhost:8081 alice@devenv
+    '';
+  };
 
 }
