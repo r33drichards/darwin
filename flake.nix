@@ -15,8 +15,19 @@
         system = "aarch64-darwin";
         modules = [
           ./configuration.nix
-          ./home.nix
+          home-manager.darwinModules.home-manager 
+                    {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.rw = import ./home.nix;
+
+            # Optionally, use home-manager.extraSpecialArgs to pass
+            # arguments to home.nix
+          }
         ];
+        specialArgs = {
+          inherit inputs;
+        };
       };
     };
   };

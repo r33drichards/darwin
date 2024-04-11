@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib,  ... }:
 
 {
   # Home Manager needs a bit of information about you and the paths it should
@@ -50,7 +50,6 @@
     enableCompletion = false; # enabled in oh-my-zsh
     initExtra = ''
       export NIXPKGS_ALLOW_UNFREE=1 
-      eval "$(direnv hook $SHELL)"
       export PATH=/opt/homebrew/bin:$PATH
     '';
     oh-my-zsh = {
