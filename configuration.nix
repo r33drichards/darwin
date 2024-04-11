@@ -31,6 +31,9 @@
   };
   services.nix-daemon.enable = true;
   programs.zsh.enable = true;
+  programs.direnv = {
+    enable = true;
+  };
 
   environment.systemPackages = with pkgs; [
     # # Adds the 'hello' command to your environment. It prints a friendly
