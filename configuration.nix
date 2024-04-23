@@ -38,6 +38,7 @@
   environment.systemPackages = with pkgs; [
     # # Adds the 'hello' command to your environment. It prints a friendly
     # # "Hello, world!" when run.
+    cmake
     pkgs.vscode
     pkgs.git
     pkgs.emacs
@@ -51,6 +52,9 @@
     transmission
     earthly
     pkgs.thefuck
+    ripgrep
+    spotify
+    atuin
   ];
 
   nixpkgs.config.allowUnfree = true;
