@@ -59,6 +59,8 @@
     };
   };
 
+  programs.atuin.enable = true;
+
 
 
 
