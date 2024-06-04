@@ -5,6 +5,14 @@
   # Run the linux-builder as a background service
   nix.linux-builder.enable = true;
 
+  nix.settings.substituters = [
+    "https://nix-community.cachix.org"
+    "https://cache.nixos.org/"
+  ];
+  nix.settings.trusted-public-keys = [
+    "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+  ];
+
   # Add needed system-features to the nix daemon
   # Starting with Nix 2.19, this will be automatic
   nix.settings.system-features = [
@@ -64,27 +72,27 @@
   # todo tailscale up --ssh 
   # https://tailscale.com/kb/1215/oauth-clients#registering-new-nodes-using-oauth-credentials
 
-  launchd.daemons.tailscale = {
-    serviceConfig = {
-      RunAtLoad = true;
-      StandardOutPath = "/tmp/tailscale.out.log";
-      StandardErrorPath = "/tmp/tailscale.err.log";
-    };
-    script = with  pkgs;''
-      echo "tailscale up"
+  # launchd.daemons.tailscale = {
+  #   serviceConfig = {
+  #     RunAtLoad = true;
+  #     StandardOutPath = "/tmp/tailscale.out.log";
+  #     StandardErrorPath = "/tmp/tailscale.err.log";
+  #   };
+  #   script = with  pkgs;''
+  #     echo "tailscale up"
 
-      source ${config.system.build.setEnvironment}
-      sleep 2
+  #     source ${config.system.build.setEnvironment}
+  #     sleep 2
 
-      # check if we are already authenticated to tailscale
-      status="$(${tailscale}/bin/tailscale status -json | ${jq}/bin/jq -r .BackendState)"
-      if [ $status = "Running" ]; then # if so, then do nothing
-        echo "tailscale is already running"
-        exit 0
-      fi
-      ${pkgs.tailscale}/bin/tailscale up --ssh
-    '';
-  };
+  #     # check if we are already authenticated to tailscale
+  #     status="$(${tailscale}/bin/tailscale status -json | ${jq}/bin/jq -r .BackendState)"
+  #     if [ $status = "Running" ]; then # if so, then do nothing
+  #       echo "tailscale is already running"
+  #       exit 0
+  #     fi
+  #     ${pkgs.tailscale}/bin/tailscale up --ssh
+  #   '';
+  # };
 
 
   launchd.agents.pf3000 = {
@@ -134,5 +142,18 @@
       ssh -N -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -L 8081:localhost:8081 alice@devenv
     '';
   };
+  launchd.agents.pf4000 = {
+    serviceConfig = {
+      RunAtLoad = true;
+      KeepAlive = true;
+      StandardOutPath = "/tmp/pf4000.out.log";
+      StandardErrorPath = "/tmp/pf4000.err.log";
+    };
+    script = with  pkgs;''
+      ssh -N -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -L 4000:localhost:4000 alice@devenv
+    '';
+  };
+
+
 
 }
