@@ -54,7 +54,7 @@
     pkgs.openssh
     pkgs.nix-direnv
     # pip
-    pkgs.nixpkgs-fmt
+    pkgs.nixfmt
     pkgs.tailscale
     warp-terminal
     transmission
@@ -63,6 +63,7 @@
     ripgrep
     spotify
     atuin
+    slack
   ];
 
   nixpkgs.config.allowUnfree = true;
