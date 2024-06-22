@@ -55,6 +55,7 @@
     pkgs.nix-direnv
     # pip
     pkgs.nixfmt
+    pkgs.nixpkgs-fmt
     pkgs.tailscale
     warp-terminal
     transmission
@@ -67,7 +68,7 @@
   ];
 
   nixpkgs.config.allowUnfree = true;
-  services.tailscale.enable = true;
+  # services.tailscale.enable = true;
   security.pam.enableSudoTouchIdAuth = true;
 
   # todo tailscale up --ssh 
@@ -95,6 +96,17 @@
   #   '';
   # };
 
+  launchd.agents.tailscaled = {
+    serviceConfig = {
+      RunAtLoad = true;
+      KeepAlive = true;
+      StandardOutPath = "/tmp/tailscaled.out.log";
+      StandardErrorPath = "/tmp/tailscaled.err.log";
+    };
+    script = with  pkgs; ''
+      ${tailscale}/bin/tailscaled
+    '';
+  };
 
   launchd.agents.pf3000 = {
     serviceConfig = {
