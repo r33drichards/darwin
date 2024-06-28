@@ -96,17 +96,35 @@
   #   '';
   # };
 
-  launchd.agents.tailscaled = {
-    serviceConfig = {
-      RunAtLoad = true;
-      KeepAlive = true;
-      StandardOutPath = "/tmp/tailscaled.out.log";
-      StandardErrorPath = "/tmp/tailscaled.err.log";
+  # launchd.agents.tailscaled = {
+  #   serviceConfig = {
+  #     RunAtLoad = true;
+  #     KeepAlive = true;
+  #     StandardOutPath = "/tmp/tailscaled.out.log";
+  #     StandardErrorPath = "/tmp/tailscaled.err.log";
+  #   };
+  #   script = with  pkgs; ''
+  #     ${tailscale}/bin/tailscaled
+  #   '';
+  # };
+
+  # I'd rather not have telemetry on my package manager.
+  environment.variables.HOMEBREW_NO_ANALYTICS = "1";
+
+  homebrew = {
+    enable = true;
+
+    onActivation = {
+      autoUpdate = true;
+      cleanup = "zap";
+      upgrade = true;
     };
-    script = with  pkgs; ''
-      ${tailscale}/bin/tailscaled
-    '';
+
+    masApps = {
+      Tailscale = 1475387142; # App Store URL id
+    };
   };
+
 
   launchd.agents.pf3000 = {
     serviceConfig = {
