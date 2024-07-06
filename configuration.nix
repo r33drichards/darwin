@@ -84,6 +84,8 @@
 
     masApps = {
       Tailscale = 1475387142; # App Store URL id
+      Bitwarden = 1352778147;
+      Amphetamine = 937984704;
     };
   };
 
