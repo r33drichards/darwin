@@ -28,13 +28,13 @@
     "nixpkgs=flake:nixpkgs"
   ];
 
-  nix.settings.trusted-users = [ "rw" ];
+  nix.settings.trusted-users = [ "robertwendt" ];
 
   # Set your system's hostname
 
   # Users configuration
-  users.users.rw = {
-    home = "/Users/rw";
+  users.users.robertwendt = {
+    home = "/Users/robertwendt";
     createHome = true; # Ensures the home directory is created
   };
   services.nix-daemon.enable = true;
