@@ -65,6 +65,7 @@
     spotify
     atuin
     slack
+    watch
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -85,7 +86,7 @@
     masApps = {
       Tailscale = 1475387142; # App Store URL id
       Bitwarden = 1352778147;
-      Amphetamine = 937984704;
+      Excel = 462058435;
     };
   };
 

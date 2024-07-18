@@ -78,8 +78,10 @@
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
-  programs.git-credential-oauth = {
-    enable = true;
-  };
+  # programs.git-credential-oauth = {
+  #   enable = true;
+  # };
+
+  home.file.".emacs.d/init.el".text =  builtins.readFile ./init.el;
 
 }
