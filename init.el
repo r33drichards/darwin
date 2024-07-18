@@ -404,12 +404,12 @@
 ;;     :end-not-begin t)))
 ;; (mmm-add-mode-ext-class 'python-mode nil 'python-rst)
 
-(use-package vterm
-    :ensure t)
+;(use-package vterm
+;    :ensure t)
 
-(add-to-list 'vterm-eval-cmds '("update-pwd" (lambda (path) (setq default-directory path))))
+;(add-to-list 'vterm-eval-cmds '("update-pwd" (lambda (path) (setq default-directory path))))
 
-(use-package multi-vterm :ensure t)
+;(use-package multi-vterm :ensure t)
 
 (use-package org-ql :ensure t)
 
