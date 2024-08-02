@@ -51,6 +51,15 @@
     initExtra = ''
       export NIXPKGS_ALLOW_UNFREE=1 
       export PATH=/opt/homebrew/bin:$PATH
+      function aws_prompt_info() {
+        if [[ -n "$AWS_PROFILE" ]]; then
+          echo "AWS:($AWS_PROFILE) "
+        fi
+
+      }
+      PROMPT='$(aws_prompt_info)%n@%m %1~ %# '
+
+
     '';
     oh-my-zsh = {
       enable = true;
@@ -83,5 +92,6 @@
   # };
 
   home.file.".emacs.d/init.el".text =  builtins.readFile ./init.el;
+  home.file.".ssh/config".text = builtins.readFile ./sshconfig;
 
 }

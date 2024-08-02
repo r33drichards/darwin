@@ -68,6 +68,8 @@
     watch
   ];
 
+
+
   nixpkgs.config.allowUnfree = true;
   # services.tailscale.enable = true;
   security.pam.enableSudoTouchIdAuth = true;
@@ -89,5 +91,4 @@
       Excel = 462058435;
     };
   };
-
 }

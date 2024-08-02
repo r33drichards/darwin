@@ -7,3 +7,9 @@ Host alice
     User alice
     Port 1235
     ProxyJump noisebridge
+    
+Host brony-nb
+ User noisebridge
+ Port 1235
+ Hostname 199.241.139.224
+ PreferredAuthentications publickey

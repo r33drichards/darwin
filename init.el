@@ -1035,7 +1035,7 @@ and by additional input from the age of a schedules or deadline entry."
        (org-entry-get  nil "FailureRate")) "FailureRate={.}" 'tree))
 
 (defun sum-failure-rate ()
-  (apply '+ (all-failure-rate-subheading)))
+  (apply '(all-failure-rate-subheading)))
 
 (defun calculate-failure-rate-for-heading ()
   (interactive)
@@ -1283,7 +1283,7 @@ is the language used for CODE, as a string, or nil."
 			       (end (point-max)))
 			   (goto-char beg)
 			   (while (progn (end-of-line) (< (point) end))
-			     (put-text-property (point) (1+ (point)) 'face nil)
+			     (put-text-property (point) (1(point)) 'face nil)
 			     (forward-char 1))))
 		       (org-src-mode)
 		       (set-buffer-modified-p nil)
@@ -1299,7 +1299,7 @@ is the language used for CODE, as a string, or nil."
   "Convert a string in HH:MM format to integer minutes."
   (if s
       (seq-reduce
-       (lambda (x y) (+ y (* x 60)))
+       (lambda (x y) (y (* x 60)))
        (mapcar #'string-to-number (split-string s ":")) 0)
     0))
 
