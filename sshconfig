@@ -1,0 +1,9 @@
+Host noisebridge
+    HostName noisebridge.duckdns.org
+    User noisebridge
+
+Host alice
+    HostName localhost
+    User alice
+    Port 1235
+    ProxyJump noisebridge
