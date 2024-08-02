@@ -51,13 +51,6 @@
     initExtra = ''
       export NIXPKGS_ALLOW_UNFREE=1 
       export PATH=/opt/homebrew/bin:$PATH
-      function aws_prompt_info() {
-        if [[ -n "$AWS_PROFILE" ]]; then
-          echo "AWS:($AWS_PROFILE) "
-        fi
-
-      }
-      PROMPT='$(aws_prompt_info)%n@%m %1~ %# '
 
 
     '';
