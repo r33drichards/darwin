@@ -6,7 +6,7 @@
 	("gnu"   . "https://elpa.gnu.org/packages/")
 	("melpa" . "https://melpa.org/packages/")))
 
-(package-initialize) 
+(package-initialize)
 (package-refresh-contents)
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
@@ -197,11 +197,6 @@
 	      (lambda () (rainbow-mode 1)))
 	    (my-global-rainbow-mode 1)))
 
-(use-package org-roam :ensure t :hook (after-init . org-roam-mode))
-  (setq org-roam-directory "~/Sync/org/roam/")
-  (setq org-roam-completion-system 'helm)
-
-(setq org-roam-db-location "~/Sync/org/roam/org-roam.db")
 
 (use-package aggressive-indent :ensure t :hook (prg-mode . agressive-indent-mode))
 
@@ -664,73 +659,6 @@ ProbabilitySuccess: "))
 			(message "Deleted file %s" filename)
 			(kill-buffer)))))))
 
-(my/general-define-key-template
- "f"  '(:which-key "file")
- "fr"  '(thrash/rename-current-buffer-file :which-key "rename")
- "fd"  '(er-delete-file-and-buffer :which-key "delete")
- "ff"  '(helm-find-files :which-key "find files")
- "fs"  '(save-buffer :which-key "save")
- ;; see shortcuts
- "fq" '(:which-key "quick navigation")
- "fw"  '(:which-key "work")
- "fwt"  '((lambda ()
-	    (interactive) (find-file "~/documents/todo.org"))
-	  :which-key "work todo")
- "ft"  '((lambda ()
-	   (interactive) (find-file "~/Sync/org/roam/20200614114256-todo.org"))
-	 :which-key "open todo org file")
- "fg"  '(:which-key "file grimoire")
- "fgt"  '((lambda ()
-	    (interactive)
-	    (find-file "~/grimoire/todo.org"))
-	  :which-key "open grimoire todo org file")
- "fc"  '(:which-key "open a config file")
- "fca" '((lambda ()
-	   (interactive) (find-file "~/dotfiles/alacritty.org"))
-	 :which-key "alacritty")
- "fcc" '((lambda ()
-	   (interactive) (find-file "~/dotfiles/compton.org"))
-	 :which-key "compton")
- "fcC" '((lambda ()
-	   (interactive) (find-file "~/dotfiles/ci.org"))
-	 :which-key "ci")
- "fcd" '((lambda ()
-	   (interactive) (find-file "~/dotfiles/dunst.org"))
-	 :which-key "dunst")
- "fcD" '((lambda ()
-	   (interactive) (find-file "~/dotfiles/dropbox.org"))
-	 :which-key "dropbox")
- "fce" '((lambda ()
-	   (interactive) (find-file "~/dotfiles/emacs.org"))
-	 :which-key "emacs")
- "fcf" '((lambda ()
-	   (interactive) (find-file "~/dotfiles/flashfocus.org"))
-	 :which-key "flashfocus")
- "fci" '((lambda ()
-	   (interactive) (find-file "~/dotfiles/i3.org"))
-	 :which-key "i3")
- "fcT" '((lambda ()
-	   (interactive) (find-file "~/dotfiles/tmux.org"))
-	 :which-key "tmux")
- "fcu" '((lambda ()
-	   (interactive) (find-file "~/dotfiles/utils.org"))
-	 :which-key "utils")
- "fcx" '((lambda ()
-	   (interactive) (find-file "~/dotfiles/x-org.org"))
-	 :which-key "x org")
- "fcz" '((lambda ()
-	   (interactive) (find-file "~/dotfiles/zsh.org"))
-	 :which-key "zsh")
- "fcr" '((lambda ()
-	   (interactive) (find-file "~/dotfiles/readme.org"))
-	 :which-key "readme")
- "fcs" '((lambda ()
-	   (interactive) (find-file "~/dotfiles/stumpwm.org"))
-		 :which-key "syncthing")
- "fcS" '((lambda ()
-	   (interactive) (find-file "~/dotfiles/syncthing.org"))
-		 :which-key "syncthing"))
-
 ; makes backspace key in helm-find-file behave like it does in 
 ; spacemacs
 (define-key helm-find-files-map
@@ -1103,11 +1031,6 @@ and by additional input from the age of a schedules or deadline entry."
 
 (when (not (getenv "CI")) (require 'org-tempo))
 
-(setq org-capture-templates
-      '(("t" "TODO" entry
-	 (file "~/Sync/org/roam/20200614114256-todo.org") "* %?")
-	("j" "Journal" entry
-	 (file "~/Sync/org/roam/20200614114326-journal.org") "* %U\n  %i\n%?")))
 
 (require 'org-protocol)
 
@@ -1209,11 +1132,6 @@ do not already have one."
 
 (when window-system (set-exec-path-from-shell-PATH))
 
-(setenv "GOPATH" "/home/rob/go")
-(setenv "PATH" (concat (getenv "PATH") ":/usr/local/go/bin"))
-(setenv "PATH" (concat (getenv "PATH") ":/home/rob/go/bin"))
-
-(add-to-list 'exec-path "/usr/local/go/bin")
 (add-hook 'before-save-hook 'gofmt-before-save)
 
 (defun auto-complete-for-go ()
@@ -1331,9 +1249,36 @@ is the language used for CODE, as a string, or nil."
 (defun replace-in-string (what with in)
   (replace-regexp-in-string (regexp-quote what) with in nil 'literal))
 
-(setq org-agenda-files (directory-files-recursively "~/Sync/org/roam/" "\\.org$"))
 
 (setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "google-chrome")
 
 (my/load-default-theme)
+
+
+;; Specifying information manually:
+(package-vc-install '(copilot :url "https://github.com/zerolfx/copilot.el")) 
+
+;; disable warning from messages *Warnings* buffer
+
+(setq warning-minimum-level :emergency)
+
+;; run  copilot-accept-completion on tab
+
+(define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
+(define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
+
+(use-package direnv
+ :config
+ (direnv-mode))
+
+
+
+
+;; you can utilize :map :hook and :config to customize copilot
+(my/general-define-key-template
+"f"  '(:which-key "file")
+"fr"  '(thrash/rename-current-buffer-file :which-key "rename")
+"fd"  '(er-delete-file-and-buffer :which-key "delete")
+"ff"  '(helm-find-files :which-key "find files")
+"fs"  '(save-buffer :which-key "save"))

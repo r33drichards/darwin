@@ -1,11 +1,14 @@
+UserKnownHostsFile /dev/null
+StrictHostKeyChecking=no
+
 Host noisebridge
-    HostName noisebridge.duckdns.org
+    HostName nb.robw.fyi
     User noisebridge
 
 Host alice
     HostName localhost
     User alice
-    Port 1235
+    Port 2222
     ProxyJump noisebridge
     
 Host brony-nb

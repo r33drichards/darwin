@@ -1,6 +1,10 @@
 { config, pkgs, lib, ... }:
 
 
+let
+  assumeAWSRole = import ./assume-aws-role.nix { inherit pkgs; };
+in
+
 {
   # Run the linux-builder as a background service
   nix.linux-builder.enable = true;
@@ -66,6 +70,10 @@
     atuin
     slack
     watch
+    nodejs
+    ripgrep
+    # Add the assume-aws-role application
+    assumeAWSRole
   ];
 
 
@@ -77,6 +85,7 @@
   environment.variables.HOMEBREW_NO_ANALYTICS = "1";
 
   homebrew = {
+
     enable = true;
 
     onActivation = {
@@ -90,5 +99,14 @@
       Bitwarden = 1352778147;
       Excel = 462058435;
     };
+    ## install amethyst cask
+    casks = [
+    ];
+
+
+
+
+
+
   };
 }
