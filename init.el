@@ -32,7 +32,7 @@
 (setq  blink-matching-paren t)
 (show-paren-mode 1)
 
-(set-face-attribute 'default nil :height 90)
+(set-face-attribute 'default nil :height 100)
 
 (setq-default tab-width 4)
 (setq indent-tabs-mode 1)
@@ -456,6 +456,16 @@
   "gfP"  '(forge-pull :which-key "forge pull"))
 
 (use-package forge :ensure t :after magit)
+
+
+;; you can utilize :map :hook and :config to customize copilot
+(my/general-define-key-template
+"f"  '(:which-key "file")
+"fr"  '(thrash/rename-current-buffer-file :which-key "rename")
+"fd"  '(er-delete-file-and-buffer :which-key "delete")
+"ff"  '(helm-find-files :which-key "find files")
+"fs"  '(save-buffer :which-key "save"))
+
 
 (my/general-define-key-template
  "w"  '(:which-key "window")
@@ -1253,9 +1263,6 @@ is the language used for CODE, as a string, or nil."
 (setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "google-chrome")
 
-(my/load-default-theme)
-
-
 ;; Specifying information manually:
 (package-vc-install '(copilot :url "https://github.com/zerolfx/copilot.el")) 
 
@@ -1274,11 +1281,3 @@ is the language used for CODE, as a string, or nil."
 
 
 
-
-;; you can utilize :map :hook and :config to customize copilot
-(my/general-define-key-template
-"f"  '(:which-key "file")
-"fr"  '(thrash/rename-current-buffer-file :which-key "rename")
-"fd"  '(er-delete-file-and-buffer :which-key "delete")
-"ff"  '(helm-find-files :which-key "find files")
-"fs"  '(save-buffer :which-key "save"))
