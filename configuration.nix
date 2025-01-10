@@ -51,7 +51,7 @@ in
     # # Adds the 'hello' command to your environment. It prints a friendly
     # # "Hello, world!" when run.
     cmake
-    pkgs.vscode
+    # pkgs.vscode
     pkgs.git
     pkgs.emacs
     # ssh
@@ -94,11 +94,11 @@ in
       upgrade = true;
     };
 
-    masApps = {
-      Tailscale = 1475387142; # App Store URL id
-      Bitwarden = 1352778147;
-      Excel = 462058435;
-    };
+    # masApps = {
+    #   Tailscale = 1475387142; # App Store URL id
+    #   Bitwarden = 1352778147;
+    #   Excel = 462058435;
+    # };
     ## install amethyst cask
     casks = [
     ];

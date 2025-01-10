@@ -68,8 +68,8 @@
 
   programs.git = {
     enable = true;
-    userName = "rw";
-    userEmail = "rw@jjk.is";
+    userName = "r33drichards";
+    userEmail = "rwendt1337@gmail.com";
   };
 
   # configure aliases

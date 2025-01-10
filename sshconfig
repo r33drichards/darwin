@@ -16,3 +16,10 @@ Host brony-nb
  Port 1235
  Hostname 199.241.139.224
  PreferredAuthentications publickey
+
+Host linux-builder
+  User builder
+  Hostname localhost
+  HostKeyAlias linux-builder
+  IdentityFile /etc/nix/builder_ed25519
+  Port 31022

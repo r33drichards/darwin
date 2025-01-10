@@ -232,7 +232,6 @@
 	  '(
 		("https://www.bloomberg.com/opinion/authors/ARbTQlRLRjE/matthew-s-levine.rss" finance)
         ("https://www.depesz.com/feed/" database tech blog)
-		("https://samharris.org/subscriber-rss/?uid=PNIUOszG9qi8ol9" podcast philosophy politics)
 		("https://medium.com/feed/@InstagramEng" tech blog)
 		("https://engineering.fb.com/feed/" tech blog)
 		("https://medium.com/feed/@netflixtechblog" tech blog)
@@ -341,7 +340,8 @@
 		("http://rss.slashdot.org/Slashdot/slashdotMain" news aggregator)
 		("https://lobste.rs/rss" news aggregator)
 		("https://hnrss.org/frontpage" news aggregator)
-		("https://old.reddit.com/.rss?feed=f01e8bf8ac3e9a63ff0f36b2e9bc554822afab35&user=mdmacidmthcoke" news reddit aggregator)))
+		("https://old.reddit.com/.rss?feed=f01e8bf8ac3e9a63ff0f36b2e9bc554822afab35&user=mdmacidmthcoke" news reddit aggregator)
+		("https://noco-db-fetch-example-r33drichards.replit.app/rss" news)))
 
 (use-package org-super-agenda :ensure t)
 
@@ -1261,14 +1261,14 @@ is the language used for CODE, as a string, or nil."
 
 
 (setq browse-url-browser-function 'browse-url-generic
-      browse-url-generic-program "google-chrome")
+      browse-url-generic-program "open")
 
 ;; Specifying information manually:
-(package-vc-install '(copilot :url "https://github.com/zerolfx/copilot.el")) 
+;; (package-vc-install '(copilot :url "https://github.com/zerolfx/copilot.el")) 
 
 ;; disable warning from messages *Warnings* buffer
 
-(setq warning-minimum-level :emergency)
+;; (setq warning-minimum-level :emergency)
 
 ;; run  copilot-accept-completion on tab
 
@@ -1278,6 +1278,10 @@ is the language used for CODE, as a string, or nil."
 (use-package direnv
  :config
  (direnv-mode))
+
+;; enable pixel-scroll-percision-mode
+;; (pixel-scroll-mode 1)
+;; (pixel-scroll-percision-mode 1)
 
 
 
