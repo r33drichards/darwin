@@ -1,6 +1,8 @@
 UserKnownHostsFile /dev/null
 StrictHostKeyChecking=no
 
+Include ~/.orbstack/ssh/config
+
 Host noisebridge
     HostName nb.robw.fyi
     User noisebridge
