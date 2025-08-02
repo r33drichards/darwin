@@ -6,6 +6,9 @@ let
 in
 
 {
+  # Set the system state version for nix-darwin
+  system.stateVersion = 6;
+
   # Run the linux-builder as a background service
 
   nix.linux-builder = {
@@ -56,7 +59,7 @@ in
     home = "/Users/robertwendt";
     createHome = true; # Ensures the home directory is created
   };
-  services.nix-daemon.enable = true;
+  # nix-daemon is now managed automatically when nix.enable is on
   programs.zsh.enable = true;
   programs.direnv = {
     enable = true;
@@ -76,12 +79,9 @@ in
     pkgs.nixfmt
     pkgs.nixpkgs-fmt
     pkgs.tailscale
-    warp-terminal
     transmission
     earthly
-    pkgs.thefuck
     ripgrep
-    spotify
     atuin
     slack
     watch
@@ -97,7 +97,7 @@ in
 
   nixpkgs.config.allowUnfree = true;
   # services.tailscale.enable = true;
-  security.pam.enableSudoTouchIdAuth = true;
+  security.pam.services.sudo_local.touchIdAuth = true;
 
   environment.variables.HOMEBREW_NO_ANALYTICS = "1";
 
