@@ -66,11 +66,7 @@
 
 
 
-  programs.git = {
-    enable = true;
-    userName = "r33drichards";
-    userEmail = "rwendt1337@gmail.com";
-  };
+
 
   # configure aliases
 
@@ -80,11 +76,11 @@
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
-  # programs.git-credential-oauth = {
-  #   enable = true;
-  # };
+  programs.git-credential-oauth = {
+    enable = true;
+  };
 
   home.file.".emacs.d/init.el".text =  builtins.readFile ./init.el;
-  home.file.".ssh/config".text = builtins.readFile ./sshconfig;
+  home.file.".ssh/nix-config".text = builtins.readFile ./sshconfig;
 
 }

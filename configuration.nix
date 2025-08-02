@@ -36,6 +36,7 @@ in
   nix.settings.system-features = [
     "nixos-test"
     "apple-virt"
+    "big-parallel"
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -88,6 +89,8 @@ in
     ripgrep
     # Add the assume-aws-role application
     assumeAWSRole
+    kubectl
+    kubernetes-helm
   ];
 
 
@@ -98,29 +101,5 @@ in
 
   environment.variables.HOMEBREW_NO_ANALYTICS = "1";
 
-  homebrew = {
 
-    enable = true;
-
-    onActivation = {
-      autoUpdate = true;
-      cleanup = "zap";
-      upgrade = true;
-    };
-
-    # masApps = {
-    #   Tailscale = 1475387142; # App Store URL id
-    #   Bitwarden = 1352778147;
-    #   Excel = 462058435;
-    # };
-    ## install amethyst cask
-    casks = [
-    ];
-
-
-
-
-
-
-  };
 }
