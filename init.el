@@ -61,6 +61,8 @@
   (setq helm-completion-in-region-fuzzy-match t)
   (setq helm-candidate-number-list 50))
 
+(use-package transient :ensure t)
+
 (use-package magit :ensure t)
 
 (use-package evil-collection :ensure t)
@@ -347,14 +349,19 @@
 
 (use-package ob-typescript :ensure t)
 
+(use-package inheritenv
+  :ensure t
+  :vc (:url "https://github.com/purcell/inheritenv" :rev :newest))
+
+(use-package claude-code
+  :ensure t
+  :vc (:url "https://github.com/stevemolitor/claude-code.el" :rev :newest))
+
 (use-package yasnippet :ensure t)
 (yas-global-mode 1)
 (setq yas-snippet-dirs
       '("~/.emacs.d/snippets"                 ;; personal snippets
         ))
-
-(use-package forge
-  :after magit :ensure t)
 
 (use-package elpy
   :ensure t
@@ -444,18 +451,21 @@
 
 (my/general-define-key-template
   "g"  '(:which-key "git")
-  "gs"  '(magit-status :which-key "git status")
-  "gf"  '(:which-key "forge")
-  "gfa"  '(forge-add-repository :which-key "forge add")
-  "gfi"  '(:which-key "issue")
-  "gfil"  '(forge-list-issues :which-key "list")
-  "gfib"  '(forge-browse-issue :which-key "list")
-  "gfp"  '(:which-key "PR's")
-  "gfpl"  '(forge-list-pullreqs :which-key "list")
-  "gfpb"  '(forge-browse-pullreq :which-key "list")
-  "gfP"  '(forge-pull :which-key "forge pull"))
+  "gs"  '(magit-status :which-key "git status"))
 
 (use-package forge :ensure t :after magit)
+
+(with-eval-after-load 'forge
+  (my/general-define-key-template
+    "gf"  '(:which-key "forge")
+    "gfa"  '(forge-add-repository :which-key "forge add")
+    "gfi"  '(:which-key "issue")
+    "gfil"  '(forge-list-issues :which-key "list")
+    "gfib"  '(forge-browse-issue :which-key "list")
+    "gfp"  '(:which-key "PR's")
+    "gfpl"  '(forge-list-pullreqs :which-key "list")
+    "gfpb"  '(forge-browse-pullreq :which-key "list")
+    "gfP"  '(forge-pull :which-key "forge pull")))
 
 
 ;; you can utilize :map :hook and :config to customize copilot
@@ -707,7 +717,11 @@ ProbabilitySuccess: "))
  "db"  '(dockerfile-build-buffer :which-key "docker build buffer"))
 
 (my/general-define-key-template
- "c"  '(calendar :which-key "calendar"))
+ "c"  '(:which-key "claude-code")
+ "cc"  '(claude-code-run :which-key "chat")
+ "cs"  '(claude-code-send-region :which-key "send region")
+ "cb"  '(claude-code-send-buffer :which-key "send buffer")
+ "cq"  '(claude-code-kill :which-key "quit"))
 
  (my/general-define-key-template
   "i" '(:which-key "insert")
@@ -797,6 +811,8 @@ move point."
 
 (fset 'yes-or-no-p 'y-or-n-p)
 
+;; Use aspell instead of ispell
+(setq ispell-program-name "aspell")
 (setq flyspell-default-dictionary "english")
 ;; https://stackoverflow.com/questions/3961119/working-setup-for-hunspell-in-emacs
 (setq ispell-dictionary-alist
@@ -1272,8 +1288,8 @@ is the language used for CODE, as a string, or nil."
 
 ;; run  copilot-accept-completion on tab
 
-(define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
-(define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
+;; (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
+;; (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion)
 
 (use-package direnv
  :config
@@ -1285,3 +1301,5 @@ is the language used for CODE, as a string, or nil."
 
 
 
+(setenv "PATH" (concat (getenv "HOME") "/bin:" (getenv "PATH")))
+(setq exec-path (cons (concat (getenv "HOME") "/bin") exec-path))
