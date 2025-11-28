@@ -15,6 +15,7 @@ in
     enable = true;
     ephemeral = true;
     maxJobs = 4;
+    supportedFeatures = [ "kvm" "nixos-test" "big-parallel" "benchmark" ];
     config = {
       virtualisation = {
         darwin-builder = {
@@ -69,6 +70,7 @@ in
     # # Adds the 'hello' command to your environment. It prints a friendly
     # # "Hello, world!" when run.
     cmake
+    glibtool
     # pkgs.vscode
     pkgs.git
     pkgs.emacs
