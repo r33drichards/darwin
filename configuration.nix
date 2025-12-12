@@ -3,11 +3,40 @@
 
 let
   assumeAWSRole = import ./assume-aws-role.nix { inherit pkgs; };
+
+  # SSH tunnel configuration
+  sshKeyPath = "/Users/robertwendt/Downloads/rw.pem";
+  bastionHost = "3.80.51.36";
+
+  # Helper function to create SSH tunnel launchd agents
+  mkSshTunnel = { name, localPort, remoteHost, remotePort, user ? "root" }: {
+    serviceConfig = {
+      Label = "com.user.ssh-tunnel-${name}";
+      ProgramArguments = [
+        "${pkgs.autossh}/bin/autossh"
+        "-M" "0"  # Disable autossh monitoring port, use ServerAlive instead
+        "-N"      # No remote command
+        "-o" "ServerAliveInterval=30"
+        "-o" "ServerAliveCountMax=3"
+        "-o" "ExitOnForwardFailure=yes"
+        "-o" "StrictHostKeyChecking=no"
+        "-o" "UserKnownHostsFile=/dev/null"
+        "-i" sshKeyPath
+        "-L" "${toString localPort}:${remoteHost}:${toString remotePort}"
+        "${user}@${bastionHost}"
+      ];
+      RunAtLoad = true;
+      KeepAlive = true;
+      StandardOutPath = "/tmp/ssh-tunnel-${name}.log";
+      StandardErrorPath = "/tmp/ssh-tunnel-${name}.err";
+    };
+  };
 in
 
 {
   # Set the system state version for nix-darwin
   system.stateVersion = 6;
+  system.primaryUser = "robertwendt";
 
   # Run the linux-builder as a background service
 
@@ -93,6 +122,12 @@ in
     assumeAWSRole
     kubectl
     kubernetes-helm
+    claude-code
+    # Spell checker for Emacs flyspell
+    aspell
+    aspellDicts.en
+    # SSH tunnel auto-reconnect
+    autossh
   ];
 
 
@@ -103,5 +138,70 @@ in
 
   environment.variables.HOMEBREW_NO_ANALYTICS = "1";
 
+  # Persistent SSH tunnels with auto-reconnect
+  launchd.user.agents = {
+    # VM5 - Port 8443 (existing tunnel)
+    ssh-tunnel-vm5-8443 = mkSshTunnel {
+      name = "vm5-8443";
+      localPort = 8443;
+      remoteHost = "10.5.0.2";
+      remotePort = 8443;
+    };
+
+    # VM1 - RDP (existing tunnel)
+    ssh-tunnel-vm1-rdp = mkSshTunnel {
+      name = "vm1-rdp";
+      localPort = 3389;
+      remoteHost = "10.1.0.2";
+      remotePort = 3389;
+    };
+
+    # VM2 - RDP
+    ssh-tunnel-vm2-rdp = mkSshTunnel {
+      name = "vm2-rdp";
+      localPort = 3390;
+      remoteHost = "10.2.0.2";
+      remotePort = 3389;
+    };
+
+    # VM3 - RDP
+    ssh-tunnel-vm3-rdp = mkSshTunnel {
+      name = "vm3-rdp";
+      localPort = 3391;
+      remoteHost = "10.3.0.2";
+      remotePort = 3389;
+    };
+
+    # VM4 - k3s API server
+    ssh-tunnel-vm4-k3s = mkSshTunnel {
+      name = "vm4-k3s";
+      localPort = 6443;
+      remoteHost = "10.4.0.2";
+      remotePort = 6443;
+    };
+
+    # stable-kite - Port forward 33019 (direct connection, no bastion)
+    ssh-tunnel-stable-kite = {
+      serviceConfig = {
+        Label = "com.user.ssh-tunnel-stable-kite";
+        ProgramArguments = [
+          "${pkgs.autossh}/bin/autossh"
+          "-M" "0"
+          "-N"
+          "-o" "ServerAliveInterval=30"
+          "-o" "ServerAliveCountMax=3"
+          "-o" "ExitOnForwardFailure=yes"
+          "-o" "StrictHostKeyChecking=no"
+          "-o" "UserKnownHostsFile=/dev/null"
+          "-L" "33019:127.0.0.1:33019"
+          "root@stable-kite"
+        ];
+        RunAtLoad = true;
+        KeepAlive = true;
+        StandardOutPath = "/tmp/ssh-tunnel-stable-kite.log";
+        StandardErrorPath = "/tmp/ssh-tunnel-stable-kite.err";
+      };
+    };
+  };
 
 }
