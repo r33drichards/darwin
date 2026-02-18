@@ -19,6 +19,7 @@
         emacs-server = pkgs.writeShellApplication {
           name = "emacs-server";
           runtimeInputs = [ pkgs.gotty pkgs.emacs pkgs.bash ];
+          
           text = ''
             export EMACS_CONFIG_DIR=${./.}
             gotty --permit-write --reconnect bash -c "emacsclient -t || (emacs --daemon --init-directory=$EMACS_CONFIG_DIR && emacsclient -t)"

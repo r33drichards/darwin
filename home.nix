@@ -49,10 +49,9 @@
     enable = true;
     enableCompletion = false; # enabled in oh-my-zsh
     initExtra = ''
-      export NIXPKGS_ALLOW_UNFREE=1 
-      export PATH=/opt/homebrew/bin:$PATH
-
-
+      export NIXPKGS_ALLOW_UNFREE=1
+      export PATH=$HOME/.local/bin:/opt/homebrew/bin:$PATH
+      export PATH=$PATH:/Users/robertwendt/.local/bin
     '';
     oh-my-zsh = {
       enable = true;
@@ -62,13 +61,6 @@
   };
 
   programs.atuin.enable = true;
-
-
-
-
-
-
-  # configure aliases
 
   home.sessionVariables = {
     # EDITOR = "emacs";

@@ -110,7 +110,7 @@ in
     pkgs.nixfmt
     pkgs.nixpkgs-fmt
     pkgs.tailscale
-    transmission
+    # transmission
     earthly
     ripgrep
     atuin
