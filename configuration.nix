@@ -115,6 +115,7 @@ in
     pkgs.nixpkgs-fmt
     pkgs.tailscale
     pkgs.awscli2
+    pkgs.google-cloud-sdk
     # transmission
     ripgrep
     atuin
