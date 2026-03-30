@@ -116,7 +116,6 @@ in
     pkgs.tailscale
     pkgs.awscli2
     # transmission
-    earthly
     ripgrep
     atuin
     slack
