@@ -38,10 +38,14 @@ in
   system.stateVersion = 6;
   system.primaryUser = "robertwendt";
 
+  # Determinate Nix manages its own daemon
+  nix.enable = false;
+
   # Run the linux-builder as a background service
 
+  # TODO: linux-builder requires nix.enable, incompatible with Determinate Nix
   nix.linux-builder = {
-    enable = true;
+    enable = false;
     ephemeral = true;
     maxJobs = 4;
     supportedFeatures = [ "kvm" "nixos-test" "big-parallel" "benchmark" ];

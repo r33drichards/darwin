@@ -48,7 +48,7 @@
   programs.zsh = {
     enable = true;
     enableCompletion = false; # enabled in oh-my-zsh
-    initExtra = ''
+    initContent = ''
       export NIXPKGS_ALLOW_UNFREE=1
       export PATH=$HOME/.local/bin:/opt/homebrew/bin:$PATH
       export PATH=$PATH:/Users/robertwendt/.local/bin

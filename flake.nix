@@ -86,6 +86,7 @@
                       {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
+              home-manager.backupFileExtension = "backup";
               home-manager.users.robertwendt = import ./home.nix;
 
               # Optionally, use home-manager.extraSpecialArgs to pass
