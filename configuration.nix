@@ -114,6 +114,7 @@ in
     pkgs.nixfmt
     pkgs.nixpkgs-fmt
     pkgs.tailscale
+    pkgs.awscli2
     # transmission
     earthly
     ripgrep
