@@ -133,6 +133,7 @@ in
     aspellDicts.en
     # SSH tunnel auto-reconnect
     autossh
+    uv
   ];
 
 
