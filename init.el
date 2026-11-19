@@ -83,7 +83,13 @@
 
 (add-hook 'org-src-mode-hook 'disable-fylcheck-in-org-src-block)
 
-(use-package yasnippet :ensure t :init (yas-global-mode))
+(use-package yasnippet
+  :ensure t
+  :init
+  (setq yas-snippet-dirs (list (expand-file-name "snippets" user-emacs-directory)))
+  :config
+  (let ((inhibit-message t))
+    (yas-global-mode 1)))
 
 (use-package smartparens :ensure t :init (smartparens-global-mode))
 
@@ -352,12 +358,6 @@
 (use-package claude-code
   :ensure t
   :vc (:url "https://github.com/stevemolitor/claude-code.el" :rev :newest))
-
-(use-package yasnippet :ensure t)
-(yas-global-mode 1)
-(setq yas-snippet-dirs
-      '("~/.emacs.d/snippets"                 ;; personal snippets
-        ))
 
 (use-package elpy
   :ensure t
