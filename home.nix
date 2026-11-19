@@ -1,5 +1,9 @@
 { config, pkgs, lib,  ... }:
 
+let
+  codex = pkgs.callPackage ./codex.nix { };
+  aspell = pkgs.aspellWithDicts (dicts: [ dicts.en ]);
+in
 {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
@@ -73,7 +77,12 @@
     enable = true;
   };
 
-  home.file.".emacs.d/init.el".text =  builtins.readFile ./init.el;
+  home.file.".emacs.d/init.el".text = ''
+    (setq my/aspell-program "${aspell}/bin/aspell"
+          codex-ide-cli-path "${codex}/bin/codex")
+  '' + builtins.readFile ./init.el;
+  home.file.".emacs.d/early-init.el".source = ./early-init.el;
+  home.file.".local/bin/codex".source = "${codex}/bin/codex";
   home.file.".ssh/nix-config".text = builtins.readFile ./sshconfig;
 
 }

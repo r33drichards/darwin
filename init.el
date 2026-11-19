@@ -1,20 +1,19 @@
-(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 (require 'package)
-(setq package-enable-at-startup nil)
 (setq package-archives
-      '(("org"   . "https://orgmode.org/elpa/")
-	("gnu"   . "https://elpa.gnu.org/packages/")
+      '(("gnu"   . "https://elpa.gnu.org/packages/")
+	("nongnu" . "https://elpa.nongnu.org/nongnu/")
 	("melpa" . "https://melpa.org/packages/")))
 
+;; Some installed autoloads instantiate Transient classes at activation time.
+(package-load-all-descriptors)
+(package-activate 'transient)
+(require 'transient)
 (package-initialize)
-(package-refresh-contents)
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
 
 (require 'use-package)
 
-(scroll-bar-mode -2)
-(tool-bar-mode   -1)
+(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+(when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (tooltip-mode    -1)
 (menu-bar-mode   -1)
 
@@ -181,13 +180,6 @@
 
 (use-package dockerfile-mode :ensure t)
 
-(use-package org-pomodoro :ensure t
-  :config (progn (setq org-pomodoro-play-sounds t)
-		 (setq org-pomodoro-ticking-sound-p t)
-		 (setq org-pomodoro-keep-killed-pomodoro-time t)
-		 (setq org-pomodoro-ticking-sound-states
-		       (quote (:pomodoro :short-break :long-break)))))
-
 (use-package geiser
   :ensure t
   :config (setq geiser-default-implementation 'guile))
@@ -353,6 +345,10 @@
   :ensure t
   :vc (:url "https://github.com/purcell/inheritenv" :rev :newest))
 
+(use-package codex-ide
+  :vc (:url "https://github.com/dgillis/emacs-codex-ide" :rev :newest)
+  :bind ("C-c C-;" . codex-ide-menu))
+
 (use-package claude-code
   :ensure t
   :vc (:url "https://github.com/stevemolitor/claude-code.el" :rev :newest))
@@ -406,12 +402,15 @@
 ;;     :end-not-begin t)))
 ;; (mmm-add-mode-ext-class 'python-mode nil 'python-rst)
 
-;(use-package vterm
-;    :ensure t)
+(use-package vterm
+  :ensure t
+  :commands vterm
+  :init (setq vterm-always-compile-module t))
 
-;(add-to-list 'vterm-eval-cmds '("update-pwd" (lambda (path) (setq default-directory path))))
-
-;(use-package multi-vterm :ensure t)
+(use-package multi-vterm
+  :ensure t
+  :commands (multi-vterm multi-vterm-next multi-vterm-prev
+             multi-vterm-dedicated-toggle multi-vterm-project))
 
 (use-package org-ql :ensure t)
 
@@ -440,7 +439,7 @@
 	   "vn"  '(multi-vterm-next :which-key "next terminal")
 	   "vp"  '(multi-vterm-prev :which-key "prev terminal")
 	   "vd"  '(multi-vterm-dedicated-toggle :which-key "toggle dedicated term")
-	   "vP"  '(multi-vterm-projetile :which-key "projectile terminal"))
+	   "vP"  '(multi-vterm-project :which-key "project terminal"))
 
 ;; use this template to add a new keybinding block. make sure that you remove ~:tangle no~ to enable this block
 (my/general-define-key-template
@@ -513,7 +512,6 @@
   "od" '(org-deadline :which-key "org agenda")
   "oA" '(org-archive-subtree-default  :which-key "org agenda")
   "op" '(org-priority :which-key "org priority")
-  "oP" '(org-pomodoro :which-key "org-pomodoro")
   "oh" '(org-html-export-to-html :which-key "export to html")
   "oe" '(org-set-effort :which-key "org set effort")
   "oF" '(:which-key "Footnote")
@@ -532,8 +530,7 @@
   "ocr" '(org-capture-refile :which-key "refile")
   "ock" '(org-capture-kill :which-key "kill/abort")
   "oC" '(:which-key "clock")
-  "oCi" '((lambda () (interactive) (org-todo) (org-pomodoro))
-		  :which-key "clock in")
+  "oCi" '(org-clock-in :which-key "clock in")
   "oCo" '(org-clock-out
 		  :which-key "clock out")
 
@@ -811,13 +808,10 @@ move point."
 
 (fset 'yes-or-no-p 'y-or-n-p)
 
-;; Use aspell instead of ispell
-(setq ispell-program-name "aspell")
-(setq flyspell-default-dictionary "english")
-;; https://stackoverflow.com/questions/3961119/working-setup-for-hunspell-in-emacs
-(setq ispell-dictionary-alist
-  '((nil "[A-Za-z]" "[^A-Za-z]" "[']" t ("-d" "en_US") nil utf-8)))
-  
+(defvar my/aspell-program "aspell")
+(setq ispell-program-name my/aspell-program
+      flyspell-default-dictionary "american")
+
 (add-hook 'text-mode-hook 'flyspell-mode)
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 
@@ -1052,8 +1046,6 @@ and by additional input from the age of a schedules or deadline entry."
       '(("Effort_ALL" . "0:15 0:30 0:45 1:00 1:30 2:00 2:30 3:00 3:30 4:00")))
 
 (setq org-src-window-setup 'current-window)
-
-(setq org-pomodoro-length 30)
 
 (when (not (getenv "CI")) (require 'org-tempo))
 
