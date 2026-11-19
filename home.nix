@@ -52,6 +52,7 @@
       export NIXPKGS_ALLOW_UNFREE=1
       export PATH=$HOME/.local/bin:/opt/homebrew/bin:$PATH
       export PATH=$PATH:/Users/robertwendt/.local/bin
+      [ -f ~/darwin/secrets.zsh ] && source ~/darwin/secrets.zsh
     '';
     oh-my-zsh = {
       enable = true;
